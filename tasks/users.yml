@@ -51,6 +51,16 @@
     loop_var: user
     label: "{{ user.name }}"
 
+- name: "{{ user_mode }} | manage systemd user rootless"
+  include_tasks: users_systemd.yml
+  when:
+    - not ansible_check_mode
+    - user_state == 'present'
+  loop: "{{ user_users if user_users.systemd == true }}"
+  loop_control:
+    loop_var: user
+    label: "{{ user.name }}"
+
 - name: "{{ user_mode }} | user_groups (delete)"
   when:
     - user_groups is defined
