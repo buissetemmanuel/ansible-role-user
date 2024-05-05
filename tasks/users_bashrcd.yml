@@ -1,0 +1,16 @@
+---
+
+- name: "{{ user_mode }} | get user_info"
+  ansible.builtin.user:
+    name: "{{ user.name }}"
+  changed_when: false
+  register: __user_info
+
+- name: "{{ user_mode }} | create folder ~/.bashrc.d/ to add some nice config"
+  become: true
+  ansible.builtin.file:
+    path: "{{ __user_info.home }}/.bashrc.d"
+    state: directory
+    owner: "{{ user.name }}"
+    group: "{{ user.group }}"
+    mode: "{{ user_directories_mode }}"

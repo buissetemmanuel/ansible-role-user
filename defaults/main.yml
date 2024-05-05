@@ -1,0 +1,22 @@
+---
+
+# state of user - present=install - absent=uninstall
+user_state: present
+
+# Manage users and groups
+user_groups: []
+#  - name: usergid
+#    state: present
+#    gid: 9999
+#    system: false
+user_users: []
+#  - name: userid
+#    state: present
+#    comment: User GEOCS Comment
+#    create_home: true
+#    uid: 8888
+#    group: usergid
+#    groups: "wheel"
+#    home: "/home"
+#    shell: "/bin/bash"
+#    system: false

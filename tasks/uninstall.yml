@@ -1,0 +1,8 @@
+---
+
+- name: Uninstall (user_mode fact)
+  ansible.builtin.set_fact:
+    user_mode: "Uninstall"
+
+- name: "{{ user_mode }} | users"
+  ansible.builtin.include_tasks: users.yml

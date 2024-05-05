@@ -1,0 +1,8 @@
+---
+
+- name: Install (user_mode fact)
+  ansible.builtin.set_fact:
+    user_mode: "Install"
+
+- name: "{{ user_mode }} | users"
+  ansible.builtin.include_tasks: users.yml
