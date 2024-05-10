@@ -56,7 +56,7 @@
   when:
     - not ansible_check_mode
     - user_state == 'present'
-  loop: "{{ user_users if user_users.systemd == true }}"
+  loop: "{{ user_users if user_users.systemd is defined and user_users.systemd == true }}"
   loop_control:
     loop_var: user
     label: "{{ user.name }}"
