@@ -52,7 +52,7 @@
     label: "{{ user.name }}"
 
 - name: "{{ user_mode }} | manage systemd user rootless"
-  include_tasks: users_systemd.yml
+  ansible.builtin.include_tasks: users_systemd.yml
   when:
     - not ansible_check_mode
     - user_state == 'present'
