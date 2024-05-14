@@ -42,7 +42,7 @@
     label: "{{ user.name }}"
 
 - name: "{{ user_mode }} | create folder ~/.bashrc.d/ to add some nice config"
-  include_tasks: users_bashrcd.yml
+  ansible.builtin.include_tasks: users_bashrcd.yml
   when:
     - not ansible_check_mode
     - user_state == 'present'
