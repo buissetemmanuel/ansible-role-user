@@ -1,0 +1,76 @@
+---
+
+- name: "{{ user_mode }} (user_mode fact)"
+  vars:
+    user_mode: "Asserts"
+  ansible.builtin.include_tasks: asserts_users.yml
+
+- name: "{{ user_mode }} | user_groups"
+  become: true
+  when:
+    - user_groups is defined
+    - user_state == 'present'
+  ansible.builtin.group:
+    name: "{{ group.name }}"
+    state: "{{ group.state | default('present') }}"
+    gid: "{{ group.gid | default(omit) }}"
+    system: "{{ group.system | default(omit) }}"
+  loop: "{{ user_groups }}"
+  loop_control:
+    loop_var: group
+    label: "{{ group.name }}"
+
+- name: "{{ user_mode }} | user_users"
+  become: true
+  when: user_users is defined
+  ansible.builtin.user:
+    name: "{{ user.name }}"
+    state: "{{ user.state | default('present') if user_state == 'present' else 'absent' }}"
+    comment: "{{ user.comment | default(omit) }}"
+    create_home: "{{ user.create_home | default(omit) }}"
+    uid: "{{ user.uid | default(omit) }}"
+    group: "{{ user.group | default(user.name) }}"
+    groups: "{{ user.groups | default(omit) }}"
+    home: "{{ user.home | default(omit) }}"
+    shell: "{{ user.shell | default('/bin/bash') }}"
+    system: "{{ user.system | default(omit) }}"
+    remove: "{{ user.remove | default(omit) }}"
+    force: "{{ false if user_state == 'present' else true }}"
+  loop: "{{ user_users }}"
+  loop_control:
+    loop_var: user
+    label: "{{ user.name }}"
+
+- name: "{{ user_mode }} | create folder ~/.bashrc.d/ to add some nice config"
+  ansible.builtin.include_tasks: users_bashrcd.yml
+  when:
+    - not ansible_check_mode
+    - user_state == 'present'
+  loop: "{{ user_users }}"
+  loop_control:
+    loop_var: user
+    label: "{{ user.name }}"
+
+- name: "{{ user_mode }} | manage systemd user rootless"
+  ansible.builtin.include_tasks: users_systemd.yml
+  when:
+    - not ansible_check_mode
+    - user_state == 'present'
+    - user.systemd is defined and user.systemd
+  loop: "{{ user_users }}"
+  loop_control:
+    loop_var: user
+    label: "{{ user.name }}"
+
+- name: "{{ user_mode }} | user_groups (delete)"
+  when:
+    - user_groups is defined
+    - user_state == 'absent'
+  become: true
+  ansible.builtin.group:
+    name: "{{ group.name }}"
+    state: absent
+  loop: "{{ user_groups }}"
+  loop_control:
+    loop_var: group
+    label: "{{ group.name }}"

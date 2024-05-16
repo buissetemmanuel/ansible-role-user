@@ -1,0 +1,7 @@
+---
+
+user_directories_state: "{{ 'directory' if user_state == 'present' else 'absent' }}"
+user_directories_mode: '0750'
+
+user_files_state: "{{ 'file' if user_state == 'present' else 'absent' }}"
+user_files_mode: '0640'

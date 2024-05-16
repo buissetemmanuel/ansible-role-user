@@ -1,0 +1,16 @@
+---
+
+galaxy_info:
+  role_name: user
+  author: BUISSET Emmanuel
+  namespace: buissetemmanuel
+  description: Manage User Unix
+  company: BUISSET
+  license: MIT
+  min_ansible_version: 2.12.3
+  platforms:
+    - name: Fedora
+      versions:
+        - "37"
+  galaxy_tags: []
+dependencies: []
