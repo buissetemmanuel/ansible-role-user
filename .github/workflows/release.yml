@@ -3,11 +3,6 @@
 name: RELEASE
 
 'on':
-  workflow_run:
-    workflows: ["MOLECULE LINT"]
-    branches: [main]
-    types:
-      - completed
   push:
     branches:
       - main
@@ -20,7 +15,11 @@ env:
   SEMANTIC_RELEASE_PACKAGES: '@semantic-release/github'
 
 jobs:
+  lint:
+    uses: buissetemmanuel/ansible-role-user/.github/workflows/molecule-lint.yml@main
+
   release:
+    needs: lint
     permissions:
       contents: write
     name: Release
