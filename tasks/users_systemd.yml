@@ -1,5 +1,20 @@
 ---
 
+- name: "{{ user_mode }} | systems | get user_info"
+  ansible.builtin.user:
+    name: "{{ user.name }}"
+  changed_when: false
+  register: __user_info
+
+- name: "{{ user_mode }} | systems | manage variable XDG_RUNTIME_DIR in ~/.bashrc.d/xdg_runtime_dir.rc"
+  become: true
+  ansible.builtin.copy:
+    dest: "{{ user_info.home }}/.bashrc.d/xdg_runtime_dir.rc"
+    content: "export XDG_RUNTIME_DIR=/run/user/$UID"
+    owner: "{{ user.name }}"
+    group: "{{ user.group }}"
+    mode: "{{ user_files_mode }}"
+
 # Persistent DBUS session
 - name: "{{ user_mode }} | systems | check if user is lingering"
   become: true
