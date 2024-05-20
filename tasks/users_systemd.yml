@@ -9,7 +9,7 @@
 - name: "{{ user_mode }} | systems | manage variable XDG_RUNTIME_DIR in ~/.bashrc.d/xdg_runtime_dir.rc"
   become: true
   ansible.builtin.copy:
-    dest: "{{ user_info.home }}/.bashrc.d/xdg_runtime_dir.rc"
+    dest: "{{ __user_info.home }}/.bashrc.d/xdg_runtime_dir.rc"
     content: "export XDG_RUNTIME_DIR=/run/user/$UID"
     owner: "{{ user.name }}"
     group: "{{ user.group }}"
