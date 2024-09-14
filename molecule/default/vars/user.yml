@@ -1,0 +1,19 @@
+---
+
+user_groups:
+  - name: user_group
+  - name: user_group_service
+  - name: user_group_logs
+  - name: user_group_access_logs
+user_users:
+  - name: user_owner
+    group: user_group
+    create_home: true
+  - name: user_owner_service
+    group: user_group_service
+    create_home: true
+    groups: user_group_logs
+    systemd: true
+  - name: user_access_logs
+    group: user_group_access_logs
+    groups: user_group_logs

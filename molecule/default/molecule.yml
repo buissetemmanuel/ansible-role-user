@@ -1,0 +1,28 @@
+---
+dependency:
+  name: galaxy
+  options:
+    role-file: molecule/default/collections.yml
+    requirements-file: molecule/default/collections.yml
+driver:
+  name: vagrant
+  provider:
+    name: libvirt
+    type: libvirt
+platforms:
+  - name: molecule-user-role-instance-1-fedora39
+    box: "fedora/39-cloud-base"
+    box_version: "39.20231031.1"
+    memory: 4096
+    cpus: 2
+    timezone: Europe/Zurich
+    groups:
+      - user
+provisioner:
+  name: ansible
+  log: true
+  config_options:
+    defaults:
+      timeout: 30
+verifier:
+  name: ansible

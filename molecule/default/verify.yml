@@ -1,0 +1,22 @@
+---
+
+- name: Verify
+  hosts: all
+  vars_files:
+    - vars/user.yml
+  tasks:
+    - name: Gather available local users group
+      ansible.builtin.getent:
+        database: passwd
+        key: "{{ item.name }}"
+      loop: "{{ user_users }}"
+      loop_control:
+        label: "{{ item.name }}"
+
+    - name: Gather available local users group
+      ansible.builtin.getent:
+        database: group
+        key: "{{ item.name }}"
+      loop: "{{ user_groups }}"
+      loop_control:
+        label: "{{ item.name }}"
