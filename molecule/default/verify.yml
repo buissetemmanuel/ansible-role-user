@@ -5,7 +5,7 @@
   vars_files:
     - vars/user.yml
   tasks:
-    - name: Gather available local users group
+    - name: Gather available local users
       ansible.builtin.getent:
         database: passwd
         key: "{{ item.name }}"
@@ -13,10 +13,16 @@
       loop_control:
         label: "{{ item.name }}"
 
-    - name: Gather available local users group
+    - name: Gather available local group
       ansible.builtin.getent:
         database: group
         key: "{{ item.name }}"
       loop: "{{ user_groups }}"
       loop_control:
         label: "{{ item.name }}"
+
+    - name: Include buissetemmanuel.user - delete
+      ansible.builtin.include_role:
+        name: buissetemmanuel.user
+      vars:
+        user_state: absent
